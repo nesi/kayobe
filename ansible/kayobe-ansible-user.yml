@@ -69,6 +69,8 @@
     ansible_python_interpreter: /usr/bin/python3
   roles:
     - role: singleplatform-eng.users
+      groups_to_create:
+        - name: "{{ kolla_ansible_group }}"
       users:
         - username: "{{ kolla_ansible_user }}"
           group: "{{ kolla_ansible_group }}"
@@ -77,8 +79,7 @@
           home: "{{ kolla_ansible_user_home | default(omit) }}"
           append: True
           ssh_key:
-            - "{{ lookup('file', ssh_public_key_path) }}"
-      become: True
+            - "{{ kolla_ansible_custom_passwords.kolla_ssh_key.public_key }}"
 
   post_tasks:
     - name: Ensure the Kayobe Ansible user has passwordless sudo
