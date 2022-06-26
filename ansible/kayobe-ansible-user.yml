@@ -70,8 +70,11 @@
   roles:
     - role: singleplatform-eng.users
       users:
-        - username: "{{ kayobe_ansible_user }}"
-          name: Kayobe deployment user
+        - username: "{{ kolla_ansible_user }}"
+          group: "{{ kolla_ansible_group }}"
+          uid: "{{ kolla_ansible_user_uid | default(omit) }}"
+          gid: "{{ kolla_ansible_user_gid | default(omit) }}"
+          home: "{{ kolla_ansible_user_home | default(omit) }}"
           append: True
           ssh_key:
             - "{{ lookup('file', ssh_public_key_path) }}"
