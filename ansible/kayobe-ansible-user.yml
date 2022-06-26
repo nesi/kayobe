@@ -78,10 +78,11 @@
           - name: "{{ kolla_ansible_group }}"
         users:
           - username: "{{ kolla_ansible_user }}"
-            group: "{{ kolla_ansible_group }}"
             uid: "{{ kolla_ansible_user_uid | default(omit) }}"
             gid: "{{ kolla_ansible_user_gid | default(omit) }}"
             home: "{{ kolla_ansible_user_home | default(omit) }}"
+            groups:
+                  - "{{ kolla_ansible_group }}"
             append: True
             ssh_key:
               - "{{ kolla_ansible_custom_passwords.kolla_ssh_key.public_key }}"
