@@ -16,7 +16,7 @@
          map(attribute='groups') | flatten | unique | union(['seed']) | join(':') }}
   tasks:
     - block:
-        - name: Ensure the Kolla Ansible user account exists
+        - name: Ensure the Kolla Ansible user account exists (for Kolla)
           include_role:
             name: singleplatform-eng.users
             apply:

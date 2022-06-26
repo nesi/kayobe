@@ -67,19 +67,24 @@
     # We can't assume that a virtualenv exists at this point, so use the system
     # python interpreter.
     ansible_python_interpreter: /usr/bin/python3
-  roles:
-    - role: singleplatform-eng.users
-      groups_to_create:
-        - name: "{{ kolla_ansible_group }}"
-      users:
-        - username: "{{ kolla_ansible_user }}"
-          group: "{{ kolla_ansible_group }}"
-          uid: "{{ kolla_ansible_user_uid | default(omit) }}"
-          gid: "{{ kolla_ansible_user_gid | default(omit) }}"
-          home: "{{ kolla_ansible_user_home | default(omit) }}"
-          append: True
-          ssh_key:
-            - "{{ kolla_ansible_custom_passwords.kolla_ssh_key.public_key }}"
+  tasks:
+    - name: Ensure the Kolla Ansible user account exists (for Kayobe)
+      include_role:
+        name: singleplatform-eng.users
+        apply:
+          become: True
+      vars:
+        groups_to_create:
+          - name: "{{ kolla_ansible_group }}"
+        users:
+          - username: "{{ kolla_ansible_user }}"
+            group: "{{ kolla_ansible_group }}"
+            uid: "{{ kolla_ansible_user_uid | default(omit) }}"
+            gid: "{{ kolla_ansible_user_gid | default(omit) }}"
+            home: "{{ kolla_ansible_user_home | default(omit) }}"
+            append: True
+            ssh_key:
+              - "{{ kolla_ansible_custom_passwords.kolla_ssh_key.public_key }}"
 
   post_tasks:
     - name: Ensure the Kayobe Ansible user has passwordless sudo
