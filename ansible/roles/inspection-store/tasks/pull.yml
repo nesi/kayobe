@@ -4,6 +4,7 @@
     name: "{{ item.value.image }}"
     repository: "{{ item.value.image }}"
     state: present
+    source: pull
   with_dict: "{{ inspection_store_services }}"
   when:
     - item.value.enabled
